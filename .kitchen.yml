@@ -1,0 +1,24 @@
+---
+driver:
+  name: vagrant
+
+provisioner:
+  hosts: all
+  name: ansible_playbook
+  # The following is borrowed from github/chef/inspec
+  # Use el7 epel repo instead of the default el6
+  ansible_yum_repo: "https://download.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm"
+  require_chef_for_busser: false
+  require_ruby_for_busser: false
+  ansible_verbosity: 2
+  ansible_verbose: true
+  # starting playbook is at: test/integration/default/default.yml
+
+verifier:
+  name: inspec
+
+platforms:
+  - name: opscode-ubuntu-16.04-nz
+
+suites:
+  - name: default

@@ -1,0 +1,5 @@
+---
+- name: test installation of docker
+  hosts: all
+  roles:
+    - docker-ansible

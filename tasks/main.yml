@@ -1,0 +1,36 @@
+---
+# This playbook adds the docker gpg key to apt
+
+- name: insert the docker gpg key to the filesystem
+  become: yes
+  become_user: root
+  template:
+    src: docker.gpg.j2
+    dest: /tmp/docker.gpg
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: add the docker gpg key to apt
+  become: yes
+  become_user: root
+  apt_key:
+    id: 0EBFCD88
+    file: /tmp/docker.gpg
+    state: present
+
+- name: add the docker repository
+  become: yes
+  become_user: root
+  apt_repository:
+    repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu xenial stable
+    state: present
+    update_cache: yes
+
+- name: install the docker package
+  become: yes
+  become_user: root
+  apt:
+    name: docker.io
+    update_cache: yes
+    state: present
